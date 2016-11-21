@@ -4,6 +4,7 @@ import { select } from 'd3-selection';
 import { geoMercator, geoPath } from 'd3-geo';
 import { transition } from 'd3-transition';
 import { scaleSqrt } from 'd3-scale';
+import { extent } from 'd3-array';
 
 /*----------  EXPORT  ----------*/
 
@@ -55,9 +56,17 @@ export function worldMap(dispatcher) {
                 dispatcher.call('COUNTRY_CHANGED', this, country);
             })
 
+        //calculate extent (min, max) of mean values to improve visualization
+        let meanArray = [];
+        for (let key in countryData) {
+            meanArray.push(parseFloat(countryData[key].mean));
+        }
+
+        let minMax = extent(meanArray);
+
         //bubbles
         let radius = scaleSqrt()
-            .domain([0, 100]) //data limits
+            .domain(minMax) //data limits
             .range([0, 10]); //mapping
 
         countryGroup.append('g')
@@ -67,7 +76,7 @@ export function worldMap(dispatcher) {
             .append('circle')
             .attr('r', (country) => {
                 let iso = country.properties.iso_a3;
-                let mean = countryData.hasOwnProperty(iso) ? (countryData[iso].mean * 100) : 0
+                let mean = countryData.hasOwnProperty(iso) ? (countryData[iso].mean) : minMax[0];
                 return radius(mean);
             })
             .attr('transform', (country) => {
