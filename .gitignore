@@ -13,3 +13,7 @@ dist
 
 #npm error log
 npm-debug.log
+
+#original datasets
+utils/data.csv
+utils/codebook.csv
