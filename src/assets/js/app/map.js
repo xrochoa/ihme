@@ -3,7 +3,7 @@
 import { select } from 'd3-selection';
 import { geoMercator, geoPath } from 'd3-geo';
 import { transition } from 'd3-transition';
-import { scaleSqrt } from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import { extent } from 'd3-array';
 
 /*----------  EXPORT  ----------*/
@@ -35,7 +35,10 @@ export function worldMap(dispatcher) {
         .attr('class', 'background')
         .attr('width', width)
         .attr('height', height)
-        .on('click', zoomIn);
+        .on('click', () => {
+            //go to global when clicking on background
+            dispatcher.call('COUNTRY_CHANGED', this, 'G');
+        });
 
 
     let countryGroup = svg.append('g');
@@ -52,8 +55,10 @@ export function worldMap(dispatcher) {
             .append('path')
             .attr('d', path)
             .on('click', (country) => {
+                //handles click over already selected country
+                let data = (selected !== country) ? country : 'G';
                 //change of country emitter (on click)
-                dispatcher.call('COUNTRY_CHANGED', this, country);
+                dispatcher.call('COUNTRY_CHANGED', this, data);
             })
 
         //calculate extent (min, max) of mean values to improve visualization
@@ -65,7 +70,7 @@ export function worldMap(dispatcher) {
         let minMax = extent(meanArray);
 
         //bubbles
-        let radius = scaleSqrt()
+        let radius = scaleLinear()
             .domain(minMax) //data limits
             .range([0, 10]); //mapping
 
@@ -87,23 +92,28 @@ export function worldMap(dispatcher) {
 
         //change of state listener
         dispatcher.on('COUNTRY_CHANGED.MAP', function(country) {
-            zoomIn(country);
+            zoomIn(country, countryData);
         });
 
     });
 
     /*----------  ON CLICK  ----------*/
 
-    function zoomIn(data) {
+    let infoBox = select('.info-box');
+
+    function zoomIn(data, countryData) {
 
         let translate, scale;
 
-        if ((selected === data) || (data === 'G')) {
+        if (data === 'G') {
 
             //if double click, zoom out
             selected = null;
             translate = [0, 0];
             scale = 1;
+
+            //animate info box
+            infoBox.classed('active', false);
 
         } else {
 
@@ -120,7 +130,24 @@ export function worldMap(dispatcher) {
             selected = data;
             scale = 0.75 / Math.max(boxWidth / width, boxHeight / height);
             translate = [width / 2 - scale * x, height / 2 - scale * y];
+
+            let iso = data.properties.iso_a3;
+
+            let mean = countryData.hasOwnProperty(iso) ? `${ (countryData[iso].mean * 100).toFixed(2) }%` : 'No data available';
+            let lower = countryData.hasOwnProperty(iso) ? `${ (countryData[iso].lower * 100).toFixed(2) }%` : 'No data available';
+            let upper = countryData.hasOwnProperty(iso) ? ` - ${ (countryData[iso].upper * 100).toFixed(2) }%` : '';
+
+            //animate info box
+            infoBox.classed('active', true)
+                .select('.content')
+                .html(`
+                    <h1>${data.properties.admin}</h1>
+                    <p>Mean: ${ mean }</p>
+                    <p>Uncertainty Interval: ${ lower } ${ upper } </p>
+                    `);
         }
+
+
 
         countryGroup.selectAll('path')
             .classed('selected', function(d) {
