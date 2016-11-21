@@ -1,15 +1,30 @@
+body {
+    padding: 5%;
+}
+
 .background {
     fill: none;
     pointer-events: all;
 }
 
 path {
-    stroke: white;
+    stroke: #B4F582;
     stroke-width: 0.25px;
-    fill: grey;
+    fill: #57B055;
     cursor: pointer;
     transition: fill .75s ease;
     &.selected {
-        fill: red;
+        fill: #B4F582;
     }
+}
+
+circle {
+    fill: rgba(#FF7400, 0.5);
+    pointer-events: none;
+}
+
+svg {
+    border-radius: 10px;
+    background-color: white;
+    border: solid 5px #B4F582;
 }
