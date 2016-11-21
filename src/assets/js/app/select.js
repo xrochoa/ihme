@@ -13,7 +13,7 @@ export function selectBox(dispatcher) {
         //map countries
         let countriesMap = map();
         countries.forEach((country) => {
-            countriesMap.set(country.id, country);
+            countriesMap.set(country.properties.iso_a3, country);
         });
 
         //select box
@@ -24,10 +24,10 @@ export function selectBox(dispatcher) {
             .data(countries).enter()
             .append('option')
             .attr('value', (country) => {
-                return country.id;
+                return country.properties.iso_a3;
             })
             .text((country) => {
-                return country.id;
+                return country.properties.admin;
             });
 
         //change of state emitter (on select change)
