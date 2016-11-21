@@ -30,6 +30,8 @@
     "yargs": "6.4.0"
   },
   "dependencies": {
-    "normalize.css": "5.0.0"
+    "d3": "4.3.0",
+    "normalize.css": "5.0.0",
+    "topojson-client": "2.1.0"
   }
 }

@@ -1,0 +1,15 @@
+.background {
+    fill: none;
+    pointer-events: all;
+}
+
+path {
+    stroke: white;
+    stroke-width: 0.25px;
+    fill: grey;
+    cursor: pointer;
+    transition: fill .75s ease;
+    &.selected {
+        fill: red;
+    }
+}
