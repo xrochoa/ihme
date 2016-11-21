@@ -32,13 +32,14 @@ export function selectBox(dispatcher) {
 
         //change of state emitter (on select change)
         countrySelect.on('change', function() {
-            let country = countriesMap.get(this.value);
+            let country = (this.value !== 'G') ? countriesMap.get(this.value) : 'G';
             dispatcher.call('COUNTRY_CHANGED', this, country);
         });
 
         //change of state listener
         dispatcher.on('COUNTRY_CHANGED.SELECT', function(country) {
-            countrySelect.property('value', country.properties.iso_a3);
+            let iso = (country !== 'G') ? country.properties.iso_a3 : 'G';
+            countrySelect.property('value', iso);
         });
     });
 

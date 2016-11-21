@@ -89,7 +89,7 @@ export function worldMap(dispatcher) {
 
         let translate, scale;
 
-        if (selected === data) {
+        if ((selected === data) || (data === 'G')) {
 
             //if double click, zoom out
             selected = null;
