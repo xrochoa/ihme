@@ -38,7 +38,7 @@ export function selectBox(dispatcher) {
 
         //change of state listener
         dispatcher.on('COUNTRY_CHANGED.SELECT', function(country) {
-            countrySelect.property('value', country.id);
+            countrySelect.property('value', country.properties.iso_a3);
         });
     });
 
