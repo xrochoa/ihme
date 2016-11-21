@@ -1,6 +1,14 @@
-body {
-    padding: 5%;
+/*----------  NAV  ----------*/
+
+nav {
+    background-color: #4A4A4A;
+    color: white;
+    padding: 10px;
+    text-align: center;
 }
+
+
+/*----------  SVG  ----------*/
 
 .background {
     fill: none;
@@ -25,11 +33,13 @@ circle {
 
 svg {
     background-color: white;
+    height: 100%;
 }
 
 .svg-wrapper {
     position: relative;
-    //border-radius: 10px;
+    margin: 50px 5% 20px;
+    border-radius: 10px;
     border: solid 5px #B4F582;
     overflow: hidden;
     .info-box {
@@ -54,4 +64,60 @@ svg {
             transform: translate(-50%, -50%);
         }
     }
+}
+
+
+/*----------  SELECT BOXES  ----------*/
+
+#options {
+    text-align: center;
+}
+
+select {
+    margin: 5px 0;
+    width: 300px;
+    background-color: #B4F582;
+    color: #4A4A4A;
+    &:focus {
+        outline: none;
+    }
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    margin-right: 20px;
+    color: #4A4A4A;
+}
+
+
+/*----------  FOOTER  ----------*/
+
+
+/* sticky footer */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 50px;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.6em;
+    position: absolute;
+    background-color: #4A4A4A;
+    color: white;
+    p {
+        margin: 10px;
+    }
+    //sticky
+    left: 0;
+    bottom: 0;
+    height: 30px;
+    width: 100%;
 }

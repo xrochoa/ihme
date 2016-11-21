@@ -5,15 +5,18 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>XXXXXXXXXXXXXXXXXXXX</title>
-    <meta name="description" content="XXXXXXXXXXXXXXXXXXXX" />
-    <!-- Facebook XXXXXXXXXXXXXXXXXXXX -->
+    <title>Overweight and Obesity</title>
+    <meta name="description" content="Overweight and Obesity" />
+    <!-- Facebook Meta Template (skipping it for this challenge) -->
+    <!--     
     <meta property="og:url" content="XXXXXXXXXXXXXXXXXXXX" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="XXXXXXXXXXXXXXXXXXXX" />
     <meta property="og:description" content="XXXXXXXXXXXXXXXXXXXX" />
-    <meta property="og:image" content="./assets/img/facebook.png" />
+    <meta property="og:image" content="./assets/img/facebook.png" /> 
+    -->
     <!-- Favicon -->
+    <link rel="icon" href="./assets/res/favicon.ico" type="image/x-icon" />
     <!-- Custom css -->
     <link href="./assets/css/style.css" rel="stylesheet" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -24,16 +27,55 @@
 </head>
 
 <body>
+    <!-- navigation -->
+    <nav>Overweight and Obesity</nav>
+    <!-- main -->
     <section class="svg-wrapper">
         <div class="info-box">
             <div class="content"></div>
         </div>
     </section>
     <section id="options">
-        <select class="select-country">
-            <option value="G">Global</option>
-        </select>
+        <!-- locaton -->
+        <div>
+            <label>Location: </label>
+            <select class="select-country">
+                <option value="G">Global</option>
+            </select>
+        </div>
+        <!-- year -->
+        <div>
+            <label>Year: </label>
+            <select class="select-country">
+                <option value="2013">2013</option>
+            </select>
+        </div>
+        <!-- age -->
+        <div>
+            <label>Age: </label>
+            <select class="select-country">
+                <option value="38">20+ yrs, age-standardized</option>
+            </select>
+        </div>
+        <!-- sex -->
+        <div>
+            <label>Sex: </label>
+            <select class="select-country">
+                <option value="3">Both</option>
+            </select>
+        </div>
+        <!-- metric -->
+        <div>
+            <label>Metric: </label>
+            <select class="select-country">
+                <option value="overweight">overweight</option>
+            </select>
+        </div>
     </section>
+    <!-- footer -->
+    <footer>
+        <p>Coding challenge. Created by Xavier Reyes Ochoa for IHME</p>
+    </footer>
     <!-- Libraries and Custom Javascript -->
     <script src="./assets/js/main.js"></script>
 </body>
