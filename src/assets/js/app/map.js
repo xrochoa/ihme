@@ -3,6 +3,7 @@
 import { select } from 'd3-selection';
 import { geoMercator, geoPath } from 'd3-geo';
 import { transition } from 'd3-transition';
+import { scaleSqrt } from 'd3-scale';
 
 /*----------  EXPORT  ----------*/
 
@@ -16,7 +17,7 @@ export function worldMap(dispatcher) {
         selected;
 
     let projection = geoMercator()
-        .center([0, 30])
+        .center([0, 43])
         .scale(120);
 
     let path = geoPath()
@@ -40,7 +41,7 @@ export function worldMap(dispatcher) {
 
     /*----------  CREATE MAP  ----------*/
 
-    dispatcher.on('JSON_LOADED.MAP', function(countries) {
+    dispatcher.on('JSON_LOADED.MAP', function(countries, countryData) {
 
         //add map features
         countryGroup.append('g')
@@ -52,7 +53,28 @@ export function worldMap(dispatcher) {
             .on('click', (country) => {
                 //change of country emitter (on click)
                 dispatcher.call('COUNTRY_CHANGED', this, country);
-            });
+            })
+
+        //bubbles
+        let radius = scaleSqrt()
+            .domain([0, 100]) //data limits
+            .range([0, 10]); //mapping
+
+        countryGroup.append('g')
+            .attr('id', 'bubbles')
+            .selectAll('circle')
+            .data(countries).enter()
+            .append('circle')
+            .attr('r', (country) => {
+                let iso = country.properties.iso_a3;
+                let mean = countryData.hasOwnProperty(iso) ? (countryData[iso].mean * 100) : 0
+                return radius(mean);
+            })
+            .attr('transform', (country) => {
+                return `translate(${ path.centroid(country) })`;
+            })
+
+
 
         //change of state listener
         dispatcher.on('COUNTRY_CHANGED.MAP', function(country) {
