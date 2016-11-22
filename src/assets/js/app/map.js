@@ -205,8 +205,13 @@ export function worldMap(dispatcher) {
 
             //animate info box
             infoBox.classed('active', false);
+            legend.style('opacity', 1);
+
 
         } else {
+
+            legend.style('opacity', 0);
+
 
             //calculate scale and translate based on bounding box and centroid
             let box = path.bounds(data),
@@ -244,6 +249,7 @@ export function worldMap(dispatcher) {
 
             //create bar graph
             barGraph(infoBoxContent, mean, lower, upper);
+
 
             /*----------  CHANGE INFO BOX WHEN NEW DATA AND ZOOMED IN  ----------*/
 
