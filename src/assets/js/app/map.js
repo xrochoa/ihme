@@ -46,7 +46,8 @@ export function worldMap(dispatcher) {
     /*----------  CREATE MAP AND CIRCLES ----------*/
 
     let countryGroup = svg.append('g')
-        .attr('id', 'countries');
+        .attr('id', 'countries')
+        .style('opacity', 0); //initially invisible
 
     let circles;
 
@@ -78,6 +79,10 @@ export function worldMap(dispatcher) {
                 return `translate(${ path.centroid(country) })`;
             });
 
+        //initial fade in
+        countryGroup.transition()
+            .duration(750)
+            .style('opacity', 1);
 
 
     });
