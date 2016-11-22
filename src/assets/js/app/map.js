@@ -7,6 +7,8 @@ import { transition } from 'd3-transition';
 import { scalePow } from 'd3-scale';
 import { extent } from 'd3-array';
 
+import { barGraph } from './bar.js';
+
 /*----------  EXPORT  ----------*/
 
 
@@ -163,18 +165,26 @@ export function worldMap(dispatcher) {
 
             let iso = data.properties.iso_a3;
 
-            let mean = countryData.hasOwnProperty(iso) ? `${ (countryData[iso].mean * 100).toFixed(2) }%` : 'No data available';
-            let lower = countryData.hasOwnProperty(iso) ? `${ (countryData[iso].lower * 100).toFixed(2) }%` : 'No data available';
-            let upper = countryData.hasOwnProperty(iso) ? ` - ${ (countryData[iso].upper * 100).toFixed(2) }%` : '';
+            let mean = countryData.hasOwnProperty(iso) ? (countryData[iso].mean * 100).toFixed(2) : 0,
+                lower = countryData.hasOwnProperty(iso) ? (countryData[iso].lower * 100).toFixed(2) : 0,
+                upper = countryData.hasOwnProperty(iso) ? (countryData[iso].upper * 100).toFixed(2) : 0;
+
+            let meanText = countryData.hasOwnProperty(iso) ? `${ mean }%` : 'No data available',
+                lowerText = countryData.hasOwnProperty(iso) ? `${ lower }%` : 'No data available',
+                upperText = countryData.hasOwnProperty(iso) ? ` - ${ upper }%` : '';
 
             //animate info box
-            infoBox.classed('active', true)
-                .select('.content')
-                .html(`
+            let infoBoxContent = infoBox.classed('active', true)
+                .select('.content');
+
+            infoBoxContent.html(`
                     <h1>${data.properties.admin}</h1>
-                    <p>Mean: ${ mean }</p>
-                    <p>Uncertainty Interval: ${ lower } ${ upper } </p>
+                    <p>Mean: ${ meanText }</p>
+                    <p>Uncertainty Interval: ${ lowerText } ${ upperText } </p>
                     `);
+
+            //create bar graph
+            barGraph(infoBoxContent, mean, lower, upper);
 
             /*----------  CHANGE INFO BOX WHEN NEW DATA AND ZOOMED IN  ----------*/
 
@@ -183,8 +193,6 @@ export function worldMap(dispatcher) {
                 zoomIn(data, countryData);
             });
         }
-
-
 
         countryGroup.selectAll('path')
             .classed('selected', function(d) {

@@ -1,7 +1,7 @@
 /*----------  NAV  ----------*/
 
 nav {
-    background-color: #4A4A4A;
+    background-color: $black;
     color: white;
     padding: 10px;
     text-align: center;
@@ -16,18 +16,18 @@ nav {
 }
 
 path {
-    stroke: #B4F582;
+    stroke: $green1;
     stroke-width: 0.25px;
-    fill: #57B055;
+    fill: $green2;
     cursor: pointer;
     transition: fill .75s ease;
     &.selected {
-        fill: #B4F582;
+        fill: $green1;
     }
 }
 
 circle {
-    fill: rgba(#FF7400, 0.5);
+    fill: rgba($orange, 0.5);
     pointer-events: none;
 }
 
@@ -38,16 +38,16 @@ svg {
 
 .svg-wrapper {
     position: relative;
-    margin: 50px 5% 20px;
+    margin: 50px 5% 0;
     border-radius: 10px;
-    border: solid 5px #B4F582;
+    border: solid 5px $green1;
     overflow: hidden;
     .info-box {
         height: 100%;
         width: 100%;
         bottom: -100%;
         position: absolute;
-        background: linear-gradient(to top, rgba(#57B055, 0.5), rgba(#B4F582, 0.5));
+        background: linear-gradient(to top, rgba($green2, 0.5), rgba($green1, 0.5));
         pointer-events: none;
         transition: opacity .75s ease;
         opacity: 0;
@@ -57,7 +57,7 @@ svg {
         }
         .content {
             color: white;
-            text-shadow: 1px 1px 1px #4A4A4A;
+            text-shadow: 1px 1px 1px $black;
             position: absolute;
             left: 50%;
             top: 50%;
@@ -68,6 +68,11 @@ svg {
 
 
 /*----------  SELECT BOXES  ----------*/
+.info {
+    font-size: 0.75em;
+    text-align: center;
+    margin-bottom: 40px;
+}
 
 #options {
     text-align: center;
@@ -77,8 +82,8 @@ svg {
 select {
     margin: 5px 0;
     width: 300px;
-    background-color: #B4F582;
-    color: #4A4A4A;
+    background-color: $green1;
+    color: $black;
     &:focus {
         outline: none;
     }
@@ -89,7 +94,7 @@ label {
     width: 100px;
     text-align: right;
     margin-right: 20px;
-    color: #4A4A4A;
+    color: $black;
 }
 
 
@@ -111,7 +116,7 @@ footer {
     text-align: center;
     font-size: 0.6em;
     position: absolute;
-    background-color: #4A4A4A;
+    background-color: $black;
     color: white;
     p {
         margin: 10px;
