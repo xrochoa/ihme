@@ -1,12 +1,7 @@
-/*----------  LIBRARIES  ----------*/
-
-import { select } from 'd3-selection';
-
 /*----------  EXPORT  ----------*/
 
 let rectWidth = 100,
-    rectHeight = 10,
-    intervalWidth = 0.25;
+    rectHeight = 10;
 
 let rectSvg;
 
@@ -15,9 +10,10 @@ export function barGraph(infoBoxContent, mean, lower, upper) {
     makeSvgAndBackground(infoBoxContent);
     makeBar(mean);
 
-    if (lower !== 0) { makeIntervalLine(lower - intervalWidth); }
-
-    if (upper !== 0) { makeIntervalLine(upper); }
+    if ((lower !== 0) && (upper !== 0)) {
+        let intervalWidth = parseFloat(upper) - parseFloat(lower);
+        makeIntervalLine(lower, intervalWidth);
+    }
 
 }
 
@@ -27,7 +23,7 @@ function makeSvgAndBackground(infoBoxContent) {
         .style('width', '100%')
         .style('height', `${rectHeight}px`)
         .attr('viewBox', `0 0 ${rectWidth} ${rectHeight}`)
-        .attr('preserveAspectRatio', 'none')
+        .attr('preserveAspectRatio', 'none');
 
     rectSvg.append('rect')
         .attr('x', 0)
@@ -51,14 +47,15 @@ function makeBar(x) {
         .attr('width', x);
 }
 
-function makeIntervalLine(x) {
+function makeIntervalLine(x, width) {
 
     rectSvg.append('rect')
         .attr('x', 0)
         .attr('y', 0)
-        .attr('width', intervalWidth)
+        .attr('width', width)
         .attr('height', rectHeight)
         .style('fill', '#4A4A4A')
+        .style('opacity', 0.25)
         .transition()
         .duration(750)
         .attr('x', x);

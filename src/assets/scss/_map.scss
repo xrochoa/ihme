@@ -1,0 +1,65 @@
+/*----------  SVG  ----------*/
+
+.background {
+    fill: none;
+    pointer-events: all;
+}
+
+path {
+    stroke: $green1;
+    stroke-width: 0.25px;
+    fill: $green2;
+    cursor: pointer;
+    transition: fill .75s ease;
+    &.selected {
+        fill: $green1;
+    }
+}
+
+circle {
+    fill: rgba($orange, 0.5);
+    pointer-events: none;
+}
+
+svg {
+    background-color: white;
+    height: 100%;
+    display: block;
+}
+
+.svg-wrapper {
+    position: relative;
+    margin: 50px 5% 0;
+    border-radius: 10px;
+    border: solid 5px $green1;
+    overflow: hidden;
+    .info-box {
+        height: 100%;
+        width: 100%;
+        bottom: -100%;
+        position: absolute;
+        background: linear-gradient(to top, rgba($green2, 0.5), rgba($green1, 0.5));
+        pointer-events: none;
+        transition: opacity .75s ease;
+        opacity: 0;
+        &.active {
+            bottom: 0%;
+            opacity: 1;
+        }
+        .content {
+            color: white;
+            text-shadow: 1px 1px 1px $black;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
+.projection {
+    font-size: 0.5em;
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+}
