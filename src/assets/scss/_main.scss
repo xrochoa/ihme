@@ -8,6 +8,28 @@ nav {
 }
 
 
+/*----------  MAP TYPE BUTTONS  ----------*/
+
+.buttons {
+    margin: 10px 5%;
+    button {
+        padding: 5px;
+        background: $green1;
+        border-radius: 5px;
+        border: solid 1px $green2;
+        transition: background .3s ease, color .3s ease;
+        &:focus {
+            outline: none;
+        }
+        &:hover, &.active {
+            cursor: pointer;
+            background: $green2;
+            color: white;
+        }
+    }
+}
+
+
 /*----------  SELECT BOXES  ----------*/
 
 .info {

@@ -4,7 +4,7 @@ import { select } from 'd3-selection';
 import { geoPath } from 'd3-geo';
 import { geoWinkel3 } from 'd3-geo-projection';
 import { transition } from 'd3-transition';
-import { scalePow } from 'd3-scale';
+import { scalePow, scaleLinear, interpolateWarm } from 'd3-scale';
 import { extent } from 'd3-array';
 
 import { barGraph } from './bar.js';
@@ -47,6 +47,8 @@ export function worldMap(dispatcher) {
 
     /*----------  CREATE MAP AND CIRCLES ----------*/
 
+    let mapType = 'bubble'; //used to change styles (this is default)
+
     let countryGroup = svg.append('g')
         .attr('id', 'countries')
         .style('opacity', 0); //initially invisible
@@ -60,6 +62,7 @@ export function worldMap(dispatcher) {
             .data(countries).enter()
             .append('path')
             .attr('d', path)
+            .style('fill', 'white') //initializes as bubble map
             .on('click', (country) => {
                 //handles click over already selected country
                 let data = (selected !== country) ? country : 'G';
@@ -98,13 +101,69 @@ export function worldMap(dispatcher) {
             zoomIn(countrySelected, countryData);
         });
 
+        /*----------  MAP TYPE ONCE DATA IS AVAILABLE ----------*/
+
+        let btChoropleth = select('#btn-choropleth-map');
+        let btnBubble = select('#btn-bubble-map');
+
+        btChoropleth.on('click', () => {
+            mapToChoropleth(countryData);
+            btChoropleth.classed('active', true);
+            btnBubble.classed('active', false);
+        });
+
+        btnBubble.on('click', () => {
+            mapToBubble(countryData);
+            btnBubble.classed('active', true);
+            btChoropleth.classed('active', false);
+        });
+
     });
 
+    /*----------  MAP TYPE  ----------*/
 
-    /*----------  ANIMATE CIRCLES  ----------*/
+    let legend = select('.legend');
+
+    function mapToChoropleth(countryData) {
+
+        mapType = 'choropleth';
+
+        countryGroup.selectAll('path')
+            .style('fill', (country) => {
+                let iso = country.properties.iso_a3;
+                if (countryData.hasOwnProperty(iso)) {
+                    return interpolateWarm(countryData[iso].mean);
+                } else {
+                    return 'transparent';
+                }
+            })
+            .style('stroke', 'transparent');
+
+        circles.style('opacity', 0);
+        legend.style('opacity', 1);
+
+    }
+
+    function mapToBubble(countryData) {
+
+        mapType = 'bubble';
+
+        countryGroup.selectAll('path')
+            .style('fill', 'white')
+            .style('stroke', '#57B055');
+
+        circles.style('opacity', 1);
+        legend.style('opacity', 0);
+
+    }
+
+
+    /*----------  ANIMATE CIRCLES OR COUNTRY COLOR ON DATA CHANGE ----------*/
 
     //replace and aimate circles on new data
-    dispatcher.on('DATA_LOADED.CIRCLES', function(countryData) {
+    dispatcher.on('DATA_LOADED.ANIMATE_MAP', function(countryData) {
+
+        if (mapType === 'choropleth') { mapToChoropleth(countryData); }
 
         //calculate extent (min, max) of mean values to improve visualization
         let meanArray = [];

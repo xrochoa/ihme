@@ -6,19 +6,19 @@
 }
 
 path {
-    stroke: $green1;
-    stroke-width: 0.25px;
-    fill: $green2;
+    stroke: $green2;
+    stroke-width: 1px;
     cursor: pointer;
-    transition: fill .75s ease;
+    transition: fill .75s ease, stroke .75s ease;
     &.selected {
-        fill: $green1;
+        fill: $green1 !important; //overwrites d3 assigned color
     }
 }
 
 circle {
     fill: rgba($orange, 0.5);
     pointer-events: none;
+    transition: opacity .75s ease;
 }
 
 svg {
@@ -29,7 +29,7 @@ svg {
 
 .svg-wrapper {
     position: relative;
-    margin: 50px 5% 0;
+    margin: 0 5%;
     border-radius: 10px;
     border: solid 5px $green1;
     overflow: hidden;
@@ -57,9 +57,25 @@ svg {
     }
 }
 
-.projection {
+.projection,
+.legend {
     font-size: 0.5em;
     position: absolute;
-    right: 10px;
     bottom: 0;
+}
+
+.projection {
+    right: 10px;
+}
+
+.legend {
+    opacity: 0;
+    transition: opacity .75s ease;
+    left: 10px;
+    img {
+        margin: 0 10px;
+        width: 100px;
+        height: 10px;
+        vertical-align: middle;
+    }
 }
