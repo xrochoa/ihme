@@ -1,9 +1,10 @@
 /*----------  LIBRARIES  ----------*/
 
 import { select } from 'd3-selection';
-import { geoMercator, geoPath } from 'd3-geo';
+import { geoPath } from 'd3-geo';
+import { geoWinkel3 } from 'd3-geo-projection';
 import { transition } from 'd3-transition';
-import { scaleLinear } from 'd3-scale';
+import { scalePow } from 'd3-scale';
 import { extent } from 'd3-array';
 
 /*----------  EXPORT  ----------*/
@@ -17,9 +18,9 @@ export function worldMap(dispatcher) {
         height = 500,
         selected;
 
-    let projection = geoMercator()
-        .center([0, 43])
-        .scale(120);
+    let projection = geoWinkel3()
+        .center([0, 15])
+        .scale(180);
 
     let path = geoPath()
         .projection(projection);
@@ -31,6 +32,7 @@ export function worldMap(dispatcher) {
         .attr('viewBox', `0 0 ${width} ${height}`)
         .attr('preserveAspectRatio', 'xMaxYMax meet');
 
+    //transparent background
     svg.append('rect')
         .attr('class', 'background')
         .attr('width', width)
@@ -41,16 +43,17 @@ export function worldMap(dispatcher) {
         });
 
 
-    let countryGroup = svg.append('g');
+    /*----------  CREATE MAP AND CIRCLES ----------*/
 
-    /*----------  CREATE MAP  ----------*/
+    let countryGroup = svg.append('g')
+        .attr('id', 'countries');
 
-    dispatcher.on('JSON_LOADED.MAP', function(countries, countryData) {
+    let circles;
+
+    dispatcher.on('TOPOJSON_LOADED.MAP', function(countries) {
 
         //add map features
-        countryGroup.append('g')
-            .attr('id', 'countries')
-            .selectAll('path')
+        countryGroup.selectAll('path')
             .data(countries).enter()
             .append('path')
             .attr('d', path)
@@ -59,7 +62,42 @@ export function worldMap(dispatcher) {
                 let data = (selected !== country) ? country : 'G';
                 //change of country emitter (on click)
                 dispatcher.call('COUNTRY_CHANGED', this, data);
-            })
+            });
+
+        let circleGroup = countryGroup.append('g')
+            .attr('id', 'circles');
+
+        //create circles for each country
+        circles = circleGroup.selectAll('circle')
+            .data(countries).enter()
+            .append('circle');
+
+        //circles radius and position initial values
+        circles.attr('r', 0)
+            .attr('transform', (country) => {
+                return `translate(${ path.centroid(country) })`;
+            });
+
+
+
+    });
+
+    /*----------  DATA LOADED  ----------*/
+
+    dispatcher.on('DATA_LOADED.HANDLER', function(countryData) {
+
+        //when data has loaded, make this listener available
+        dispatcher.on('COUNTRY_CHANGED.MAP', function(countrySelected) {
+            zoomIn(countrySelected, countryData);
+        });
+
+    });
+
+
+    /*----------  ANIMATE CIRCLES  ----------*/
+
+    //replace and aimate circles on new data
+    dispatcher.on('DATA_LOADED.CIRCLES', function(countryData) {
 
         //calculate extent (min, max) of mean values to improve visualization
         let meanArray = [];
@@ -69,31 +107,18 @@ export function worldMap(dispatcher) {
 
         let minMax = extent(meanArray);
 
-        //bubbles
-        let radius = scaleLinear()
+        let radius = scalePow()
             .domain(minMax) //data limits
             .range([0, 10]); //mapping
 
-        countryGroup.append('g')
-            .attr('id', 'bubbles')
-            .selectAll('circle')
-            .data(countries).enter()
-            .append('circle')
+        //transition
+        circles.transition()
+            .duration(750)
             .attr('r', (country) => {
                 let iso = country.properties.iso_a3;
                 let mean = countryData.hasOwnProperty(iso) ? (countryData[iso].mean) : minMax[0];
                 return radius(mean);
-            })
-            .attr('transform', (country) => {
-                return `translate(${ path.centroid(country) })`;
-            })
-
-
-
-        //change of state listener
-        dispatcher.on('COUNTRY_CHANGED.MAP', function(country) {
-            zoomIn(country, countryData);
-        });
+            });
 
     });
 
@@ -145,6 +170,13 @@ export function worldMap(dispatcher) {
                     <p>Mean: ${ mean }</p>
                     <p>Uncertainty Interval: ${ lower } ${ upper } </p>
                     `);
+
+            /*----------  CHANGE INFO BOX WHEN NEW DATA AND ZOOMED IN  ----------*/
+
+            dispatcher.on('DATA_LOADED.INFO_BOX', function(countryData) {
+                let data = (selected !== null) ? selected : 'G';
+                zoomIn(data, countryData);
+            });
         }
 
 
@@ -160,5 +192,7 @@ export function worldMap(dispatcher) {
             .attr('transform', `translate(${ translate })scale(${ scale })`);
 
     }
+
+
 
 }

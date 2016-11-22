@@ -8,7 +8,7 @@ import { map } from 'd3-collection';
 
 export function selectBox(dispatcher) {
 
-    dispatcher.on('JSON_LOADED.SELECT', function(countries) {
+    dispatcher.on('TOPOJSON_LOADED.SELECT_COUNTRY', function(countries) {
 
         //map countries
         let countriesMap = map();
@@ -37,10 +37,12 @@ export function selectBox(dispatcher) {
         });
 
         //change of state listener
-        dispatcher.on('COUNTRY_CHANGED.SELECT', function(country) {
+        dispatcher.on('COUNTRY_CHANGED.SELECT_COUNTRY', function(country) {
             let iso = (country !== 'G') ? country.properties.iso_a3 : 'G';
             countrySelect.property('value', iso);
         });
-    });
 
+        dispatcher.call('LOAD_DATA'); //request initial data
+
+    });
 }
