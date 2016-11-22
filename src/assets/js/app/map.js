@@ -18,7 +18,7 @@ export function worldMap(dispatcher) {
 
     let width = 1000,
         height = 500,
-        selected;
+        selected = 'G';
 
     let projection = geoWinkel3()
         .center([0, 15])
@@ -140,7 +140,7 @@ export function worldMap(dispatcher) {
             .style('stroke', 'transparent');
 
         circles.style('opacity', 0);
-        legend.style('opacity', 1);
+        if (selected === 'G') { legend.style('opacity', 1); }
 
     }
 
@@ -199,13 +199,13 @@ export function worldMap(dispatcher) {
         if (data === 'G') {
 
             //if double click, zoom out
-            selected = null;
+            selected = 'G';
             translate = [0, 0];
             scale = 1;
 
             //animate info box
             infoBox.classed('active', false);
-            legend.style('opacity', 1);
+            if (mapType === 'choropleth') { legend.style('opacity', 1); }
 
 
         } else {
