@@ -46,7 +46,7 @@ export function selectBox(dispatcher) {
             .text('-- Global --')
             .attr('selected', 'selected');
 
-        countrySelect.attr('value', 'G')
+        countrySelect.attr('value', 'G');
 
         //change of state emitter (on select change)
         countrySelect.on('change', function() {
