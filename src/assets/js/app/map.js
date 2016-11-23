@@ -30,8 +30,7 @@ export function worldMap(dispatcher) {
     /*----------  SVG  ----------*/
 
     let svg = select('.svg-wrapper').append('svg')
-        .attr('viewBox', `0 0 ${width} ${height}`)
-        //.attr('preserveAspectRatio', 'xMidYMid meet');
+        .attr('viewBox', `0 0 ${width} ${height}`);
 
     //transparent background
     svg.append('rect')
