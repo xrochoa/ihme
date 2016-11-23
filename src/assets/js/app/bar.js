@@ -1,9 +1,11 @@
+import { styles } from 'd3-selection-multi';
+
 /*----------  EXPORT  ----------*/
 
 let rectWidth = 100,
     rectHeight = 10;
 
-let rectSvg;
+let rectSvgWrapper, rectSvg;
 
 export function barGraph(infoBoxContent, mean, lower, upper) {
 
@@ -15,11 +17,16 @@ export function barGraph(infoBoxContent, mean, lower, upper) {
         makeIntervalLine(lower, intervalWidth);
     }
 
+    makeLabel('0%', 0, 'auto', '-25%');
+    makeLabel('100%', 'auto', 0, '75%');
+
 }
 
 function makeSvgAndBackground(infoBoxContent) {
 
-    rectSvg = infoBoxContent.append('svg')
+    rectSvgWrapper = infoBoxContent.append('div');
+
+    rectSvg = rectSvgWrapper.append('svg')
         .style('width', '100%')
         .style('height', `${rectHeight}px`)
         .attr('viewBox', `0 0 ${rectWidth} ${rectHeight}`)
@@ -31,7 +38,6 @@ function makeSvgAndBackground(infoBoxContent) {
         .attr('width', rectWidth)
         .attr('height', rectHeight)
         .style('fill', 'white');
-
 }
 
 function makeBar(x) {
@@ -59,4 +65,20 @@ function makeIntervalLine(x, width) {
         .transition()
         .duration(750)
         .attr('x', x);
+}
+
+function makeLabel(text, left, right, translate) {
+
+    rectSvgWrapper.style('position', 'relative')
+        .append('p')
+        .styles({
+            display: 'block',
+            position: 'absolute',
+            left: left,
+            right: right,
+            transform: `translateX(${ translate })`,
+            margin: '2px',
+            'font-size': rectHeight + 'px'
+        })
+        .text(text);
 }

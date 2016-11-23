@@ -34,6 +34,7 @@
   "dependencies": {
     "d3": "4.3.0",
     "d3-geo-projection": "1.2.1",
+    "d3-selection-multi": "1.0.0",
     "normalize.css": "5.0.0",
     "topojson-client": "2.1.0"
   }
