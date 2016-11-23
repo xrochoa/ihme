@@ -55,7 +55,7 @@ svg {
         display: none;
         position: absolute;
         z-index: 2;
-        background: linear-gradient(to top, rgba($green2, 0.5), rgba($green1, 0.5));
+        background: linear-gradient(to top, rgba($green2, 0.75), rgba($green1, 0.75));
         pointer-events: none;
         transition: opacity .75s ease;
         opacity: 0;

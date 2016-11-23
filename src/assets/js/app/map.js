@@ -49,7 +49,7 @@ export function worldMap(dispatcher) {
 
     let countryGroup = svg.append('g')
         .attr('id', 'countries')
-        .style('opacity', 0); //initially invisible
+        .style('opacity', '0'); //initially invisible
 
     let circles;
 
@@ -132,7 +132,7 @@ export function worldMap(dispatcher) {
                 if (countryData.hasOwnProperty(iso)) {
                     return interpolateWarm(countryData[iso].mean);
                 } else {
-                    return 'transparent';
+                    return 'gray';
                 }
             })
             .style('stroke', 'transparent');
@@ -242,7 +242,7 @@ export function worldMap(dispatcher) {
             infoBoxContent.html(dedent `
                     <h1>${data.properties.admin}</h1>
                     <p>Mean: ${ meanText }</p>
-                    <p>Uncertainty Interval: ${ lowerText } ${ upperText } </p>
+                    <p><sub>Uncertainty Interval: ${ lowerText } ${ upperText }</sub></p>
                     `);
 
             //create bar graph
