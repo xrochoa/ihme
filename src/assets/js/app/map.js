@@ -4,7 +4,7 @@ import { select } from 'd3-selection';
 import { geoPath } from 'd3-geo';
 import { geoWinkel3 } from 'd3-geo-projection';
 import { transition } from 'd3-transition';
-import { scalePow, scaleLinear, interpolateWarm } from 'd3-scale';
+import { scalePow, interpolateWarm } from 'd3-scale';
 import { extent } from 'd3-array';
 
 import { barGraph } from './bar.js';
@@ -113,7 +113,7 @@ export function worldMap(dispatcher) {
         });
 
         btnBubble.on('click', () => {
-            mapToBubble(countryData);
+            mapToBubble();
             btnBubble.classed('active', true);
             btChoropleth.classed('active', false);
         });
@@ -144,7 +144,7 @@ export function worldMap(dispatcher) {
 
     }
 
-    function mapToBubble(countryData) {
+    function mapToBubble() {
 
         mapType = 'bubble';
 

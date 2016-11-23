@@ -10,6 +10,7 @@ comps
 
 #files and folders that are deleted and recreated every time gulp runs
 dist
+.publish
 
 #npm error log
 npm-debug.log

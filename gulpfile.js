@@ -33,6 +33,9 @@ const del = require('del'),
 //server
 const browserSync = require('browser-sync').create();
 
+//docs
+var ghPages = require('gulp-gh-pages');
+
 /*----------  CLEAN  ----------*/
 
 //Clean dist folder before tasks
@@ -54,7 +57,7 @@ gulp.task('res', function() {
 //Minify html
 gulp.task('html', function() {
     return gulp.src('./src/**/*.html')
-        .pipe(gulpif(argv.production, htmlmin({ collapseWhitespace: true })))
+        .pipe(gulpif(argv.production, htmlmin({ collapseWhitespace: true, removeComments: true })))
         .pipe(gulp.dest('./dist'))
         .pipe(browserSync.stream());
 });
@@ -154,4 +157,12 @@ gulp.task('watch', function() {
 // Default Task
 gulp.task('default', function() {
     runSequence('clean', 'res', 'img', 'html', 'css', 'js', 'watch');
+});
+
+/*----------  GITHUB PAGES DOCS  ----------*/
+
+//not included in default
+gulp.task('deploy', function() {
+    return gulp.src('./dist/**/*')
+        .pipe(ghPages());
 });
