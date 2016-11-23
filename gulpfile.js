@@ -84,7 +84,7 @@ gulp.task('js:lint', function() {
 //Bundle and minify js
 gulp.task('js:bundle', function() {
     return browserify({ entries: './src/assets/js/main.js', extensions: ['.js'], debug: true }) //debug adds sourcemaps
-        .transform('babelify', { presets: ['es2015'] })
+        .transform('babelify', { presets: ['es2015'], plugins: ['dedent'] })
         .bundle().on('error', function(err) {
             console.log(err.message);
             this.emit('end');

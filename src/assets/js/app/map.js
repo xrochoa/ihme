@@ -241,7 +241,7 @@ export function worldMap(dispatcher) {
             let infoBoxContent = infoBox.classed('active', true)
                 .select('.content');
 
-            infoBoxContent.html(`
+            infoBoxContent.html(dedent`
                     <h1>${data.properties.admin}</h1>
                     <p>Mean: ${ meanText }</p>
                     <p>Uncertainty Interval: ${ lowerText } ${ upperText } </p>
