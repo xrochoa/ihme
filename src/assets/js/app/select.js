@@ -16,12 +16,22 @@ export function selectBox(dispatcher) {
             countriesMap.set(country.properties.iso_a3, country);
         });
 
+        //sort countries
+        let sortedCountries = countries.sort((a, b) => {
+            if (a.properties.admin > b.properties.admin) {
+                return 1;
+            }
+            if (a.properties.admin < b.properties.admin) {
+                return -1;
+            }
+        });
+
         //select box
         let countrySelect = select('.select-country');
 
         //add options from countryMap
         countrySelect.selectAll('option')
-            .data(countries).enter()
+            .data(sortedCountries).enter()
             .append('option')
             .attr('value', (country) => {
                 return country.properties.iso_a3;
