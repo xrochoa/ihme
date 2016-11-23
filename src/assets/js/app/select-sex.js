@@ -9,7 +9,7 @@ export function selectBoxSex(dispatcher) {
     //select box
     let sexSelect = select('.select-sex');
 
-    let sexOptions = [{ name: 'male', id: 1 }, { name: 'female', id: 2 }, { name: 'both', id: 3 }];
+    let sexOptions = [{ name: 'Male', id: 1 }, { name: 'Female', id: 2 }, { name: 'Both', id: 3 }];
 
     //add options from countryMap
     sexSelect.selectAll('option')
