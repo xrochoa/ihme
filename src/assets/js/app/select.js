@@ -18,12 +18,13 @@ export function selectBox(dispatcher) {
 
         //sort countries
         let sortedCountries = countries.sort((a, b) => {
-            if (a.properties.admin > b.properties.admin) {
+            if (a.properties.admin >= b.properties.admin) {
                 return 1;
             }
             if (a.properties.admin < b.properties.admin) {
                 return -1;
             }
+            return 0;
         });
 
         //select box
@@ -39,6 +40,13 @@ export function selectBox(dispatcher) {
             .text((country) => {
                 return country.properties.admin;
             });
+
+        countrySelect.insert('option', ':first-child')
+            .attr('value', 'G')
+            .text('-- Global --')
+            .attr('selected', 'selected');
+
+        countrySelect.attr('value', 'G')
 
         //change of state emitter (on select change)
         countrySelect.on('change', function() {
