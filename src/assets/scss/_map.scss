@@ -59,6 +59,7 @@ svg {
         pointer-events: none;
         transition: opacity .75s ease;
         opacity: 0;
+        border-radius: 5px;
         &.active {
             display: block;
             opacity: 1;
