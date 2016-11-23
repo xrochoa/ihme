@@ -30,9 +30,8 @@ export function worldMap(dispatcher) {
     /*----------  SVG  ----------*/
 
     let svg = select('.svg-wrapper').append('svg')
-        .style('width', '100%')
         .attr('viewBox', `0 0 ${width} ${height}`)
-        .attr('preserveAspectRatio', 'xMaxYMax meet');
+        //.attr('preserveAspectRatio', 'xMidYMid meet');
 
     //transparent background
     svg.append('rect')
@@ -241,7 +240,7 @@ export function worldMap(dispatcher) {
             let infoBoxContent = infoBox.classed('active', true)
                 .select('.content');
 
-            infoBoxContent.html(dedent`
+            infoBoxContent.html(dedent `
                     <h1>${data.properties.admin}</h1>
                     <p>Mean: ${ meanText }</p>
                     <p>Uncertainty Interval: ${ lowerText } ${ upperText } </p>

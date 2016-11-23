@@ -28,22 +28,39 @@ svg {
 }
 
 .svg-wrapper {
+    //svg fix for IE
     position: relative;
-    margin: 0 5%;
+    height: 0;
+    width: 90%;
+    margin: 0 auto;
+    padding: 0;
+    padding-bottom: 40%;
+    > svg {
+        position: absolute;
+        z-index: 0; //remains under info box
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        border-radius: 10px; //fixes hard edges
+    }
+    //end of cross brower fix
+    position: relative;
     border-radius: 10px;
     border: solid 5px $green1;
-    overflow: hidden;
+    overflow: visible;
     .info-box {
         height: 100%;
         width: 100%;
-        bottom: -100%;
+        display: none;
         position: absolute;
+        z-index: 2;
         background: linear-gradient(to top, rgba($green2, 0.5), rgba($green1, 0.5));
         pointer-events: none;
         transition: opacity .75s ease;
         opacity: 0;
         &.active {
-            bottom: 0%;
+            display: block;
             opacity: 1;
         }
         .content {
@@ -62,6 +79,7 @@ svg {
     font-size: 0.5em;
     position: absolute;
     bottom: 0;
+    z-index: 1;
 }
 
 .projection {
